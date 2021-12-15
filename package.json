@@ -60,6 +60,12 @@
                     "type": "string",
                     "default": "#F8F3AB",
                     "description": "Background color that flashes to show the range when yanking."
+                },
+                "simpleVim.initialMode": {
+                    "type": "string",
+                    "enum": ["insert", "normal"],
+                    "default": "insert",
+                    "description": "Which mode to start when the extension first loads."
                 }
             }
         }

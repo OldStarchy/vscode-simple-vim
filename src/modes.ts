@@ -3,27 +3,27 @@ import * as vscode from 'vscode';
 import { Mode } from './modes_types';
 import { VimState } from './vim_state_types';
 
-export function enterInsertMode(vimState: VimState): void {
+export async function enterInsertMode(vimState: VimState): Promise<void> {
     vimState.mode = Mode.Insert;
-    setModeContext('extension.simpleVim.insertMode');
+    await setModeContext('extension.simpleVim.insertMode');
 }
 
-export function enterNormalMode(vimState: VimState): void {
+export async function enterNormalMode(vimState: VimState): Promise<void> {
     vimState.mode = Mode.Normal;
-    setModeContext('extension.simpleVim.normalMode');
+    await setModeContext('extension.simpleVim.normalMode');
 }
 
-export function enterVisualMode(vimState: VimState): void {
+export async function enterVisualMode(vimState: VimState): Promise<void> {
     vimState.mode = Mode.Visual;
-    setModeContext('extension.simpleVim.visualMode');
+    await setModeContext('extension.simpleVim.visualMode');
 }
 
-export function enterVisualLineMode(vimState: VimState): void {
+export async function enterVisualLineMode(vimState: VimState): Promise<void> {
     vimState.mode = Mode.VisualLine;
-    setModeContext('extension.simpleVim.visualLineMode');
+    await setModeContext('extension.simpleVim.visualLineMode');
 }
 
-function setModeContext(key: string) {
+async function setModeContext(key: string) {
     const modeKeys = [
         'extension.simpleVim.insertMode',
         'extension.simpleVim.normalMode',
@@ -31,9 +31,9 @@ function setModeContext(key: string) {
         'extension.simpleVim.visualLineMode',
     ];
 
-    modeKeys.forEach(modeKey => {
-        vscode.commands.executeCommand('setContext', modeKey, key === modeKey);
-    });
+    Promise.all(modeKeys.map(async modeKey => {
+        await vscode.commands.executeCommand('setContext', modeKey, key === modeKey);
+    }));
 }
 
 export function setModeCursorStyle(mode: Mode, editor: vscode.TextEditor): void {
